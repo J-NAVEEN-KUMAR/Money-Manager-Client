@@ -9,6 +9,7 @@ import {
   List,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import ListData from "./ListData";
 
 const useStyles = makeStyles({
   media: {
@@ -57,7 +58,7 @@ const DataGrid = () => {
       <CardContent className={classes.cartContent}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            {/* <List /> */}
+            <ListData />
           </Grid>
         </Grid>
       </CardContent>
