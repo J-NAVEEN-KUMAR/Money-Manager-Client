@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@mui/styles";
 import {
   Avatar,
@@ -11,6 +11,7 @@ import {
   Slide,
 } from "@mui/material";
 import { Delete, MoneyOff } from "@mui/icons-material";
+import { BudgetTrackerContext } from "../context/Context";
 
 const useStyles = makeStyles({
   avatarIncome: {
@@ -29,50 +30,9 @@ const useStyles = makeStyles({
 
 const ListData = () => {
   const classes = useStyles();
-  const transactions = [
-    {
-      id: 1,
-      type: "Income",
-      category: "Salary",
-      amount: 50,
-      date: "Thu Feb 17",
-    },
-    {
-      id: 2,
-      type: "Income",
-      category: "Salary",
-      amount: 5550,
-      date: "Thu Feb 17",
-    },
-    {
-      id: 3,
-      type: "Income",
-      category: "Salary",
-      amount: 150,
-      date: "Thu Feb 17",
-    },
-    {
-      id: 4,
-      type: "Expense",
-      category: "Book",
-      amount: 150,
-      date: "Thu Feb 17",
-    },
-    {
-      id: 5,
-      type: "Expense",
-      category: "GIft",
-      amount: 550,
-      date: "Thu Feb 17",
-    },
-    {
-      id: 6,
-      type: "Income",
-      category: "Salary",
-      amount: 50,
-      date: "Thu Feb 17",
-    },
-  ];
+  const { deleteTransactions, transactions  } = useContext(BudgetTrackerContext);
+
+  
   return (
     <List dense={false} className={classes.list}>
       {transactions.map((transaction) => (

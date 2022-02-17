@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import { makeStyles } from "@mui/styles";
 import {
   Button,
@@ -13,6 +13,8 @@ import {
 } from "@mui/material";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import { BudgetTrackerContext } from "../context/Context";
+import { v4 as uuidv4 } from "uuid";
 
 const useStyles = makeStyles({
   button: {
@@ -24,8 +26,30 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
+const initialState = {
+  amount: "",
+  category: "",
+  type: "Personal",
+  desc: "",
+  date: new Date(),
+};
+
 const BudgetForm = ({ budgetType }) => {
   const classes = useStyles();
+  const [formData, setFormData] = useState(initialState);
+  // console.log(formData);
+  const { addTransaction } = useContext(BudgetTrackerContext);
+
+  const createTransaction = () => {
+    const transaction = {
+      ...formData,
+      amount: Number(formData.amount),
+      id: uuidv4(),
+    };
+    addTransaction(transaction);
+    setFormData(initialState);
+  };
+
   const [openAlert, setOpenAlert] = React.useState(false);
   const handleClick = () => {
     setOpenAlert(true);
@@ -48,13 +72,22 @@ const BudgetForm = ({ budgetType }) => {
               startAdornment={
                 <InputAdornment position="start">₹​</InputAdornment>
               }
+              value={formData.amount}
+              onChange={(e) =>
+                setFormData({ ...formData, amount: e.target.value })
+              }
             />
           </FormControl>
         </Grid>
         <Grid item xs={6}>
           <FormControl fullWidth>
             <InputLabel>Type</InputLabel>
-            <Select>
+            <Select
+              value={formData.type}
+              onChange={(e) =>
+                setFormData({ ...formData, type: e.target.value })
+              }
+            >
               <MenuItem value="Office">Office</MenuItem>
               <MenuItem value="Personal">Personal</MenuItem>
             </Select>
@@ -63,25 +96,40 @@ const BudgetForm = ({ budgetType }) => {
         <Grid item xs={6}>
           <FormControl fullWidth>
             <InputLabel>Categories</InputLabel>
-            <Select>
+            <Select
+              value={formData.category}
+              onChange={(e) =>
+                setFormData({ ...formData, category: e.target.value })
+              }
+            >
               <MenuItem value="Business">Business</MenuItem>
               <MenuItem value="Salary">Salary</MenuItem>
             </Select>
           </FormControl>
         </Grid>
         <Grid item xs={6}>
-          <TextField type="datetime-local" fullWidth />
+          <TextField
+            type="datetime-local"
+            fullWidth
+            value={formData.date}
+            onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+          />
         </Grid>
         <Grid item xs={12}>
           <InputLabel>Description</InputLabel>
-          <TextField type="text" fullWidth />
+          <TextField
+            type="text"
+            fullWidth
+            value={formData.desc}
+            onChange={(e) => setFormData({ ...formData, desc: e.target.value })}
+          />
         </Grid>
         <Grid item xs={12} className={classes.button}>
           <Button
             variant="outlined"
             fullWidth
             style={{ color: "green", backgroundColor: "lightgreen" }}
-            onClick={handleClick}
+            onClick={(createTransaction)}
           >
             Create
           </Button>
