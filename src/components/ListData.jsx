@@ -31,7 +31,7 @@ const useStyles = makeStyles({
 const ListData = () => {
   const classes = useStyles();
   const { deleteTransactions, transactions  } = useContext(BudgetTrackerContext);
-
+  console.log(transactions, "from list data");
   
   return (
     <List dense={false} className={classes.list}>

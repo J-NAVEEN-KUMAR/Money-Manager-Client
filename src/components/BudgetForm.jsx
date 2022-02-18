@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { makeStyles } from "@mui/styles";
 import {
   Button,
@@ -30,6 +30,7 @@ const initialState = {
   amount: "",
   category: "",
   type: "Personal",
+  budgetType: "Income",
   desc: "",
   date: new Date(),
 };
@@ -37,8 +38,12 @@ const initialState = {
 const BudgetForm = ({ budgetType }) => {
   const classes = useStyles();
   const [formData, setFormData] = useState(initialState);
-  // console.log(formData);
   const { addTransaction } = useContext(BudgetTrackerContext);
+  useEffect(() => {
+    setFormData({ ...formData, budgetType: budgetType });
+  }, [budgetType]);
+
+  console.log(formData, "from form");
 
   const createTransaction = () => {
     const transaction = {
@@ -129,7 +134,7 @@ const BudgetForm = ({ budgetType }) => {
             variant="outlined"
             fullWidth
             style={{ color: "green", backgroundColor: "lightgreen" }}
-            onClick={(createTransaction)}
+            onClick={createTransaction}
           >
             Create
           </Button>
